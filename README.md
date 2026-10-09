@@ -61,6 +61,6 @@ que nunca os falte un gato en el sofá ni un plan de viaje entre manos, y sobre 
 
 Os queremos muchísimo.
 
-**Martina y Carlos · Celia y Sergio · Ruth y Álvaro · Laura**
+**Martina y Carlos · Celia y Sergio**
 
 🐱🐱
