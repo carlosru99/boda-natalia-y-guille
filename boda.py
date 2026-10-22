@@ -32,8 +32,8 @@ def limpiar_invitados(invitados):
     El Excel de invitados lo exportó un consultor un viernes a las 18:59.
 
     Devuelve la lista sin duplicados, sin espacios de más, con cada nombre
-    en formato Título ("laura" -> "Laura") y ordenada con sorted() de toda
-    la vida (sí, Álvaro sale el último, culpa de la tilde).
+    en formato Título ("celia" -> "Celia") y ordenada con sorted() de toda
+    la vida (sí, Carlos sale el primero, que no se le suba).
     """
     return invitados  # TODO: lo limpiamos en la fase 2 del proyecto
 
@@ -170,7 +170,7 @@ _SOBRE = (
     "biwKeSB2b3NvdHJvcyBwYXJhIGVsIG1hdHJpbW9uaW8uCgpRdWUgZXN0ZSBtZXJnZSBzZWEgcGFyYSBzaWVtcHJlLApzaW4gY29u"
     "ZmxpY3RvcyAobyBjb24gcG9jb3MsIHkgYmllbiByZXN1ZWx0b3MpLgoK8J+SjCAgWWEgcG9kw6lpcyBhYnJpciBlbCBzb2JyZS4g"
     "IPCfkowKClF1ZSBzZcOhaXMgbXV5IGZlbGljZXMganVudG9zLiDwn5Cx8J+QseKdpO+4jwoK4oCUIE1hcnRpbmEgeSBDYXJsb3Ms"
-    "IENlbGlhIHkgU2VyZ2lvLCBSdXRoIHkgw4FsdmFybywgeSBMYXVyYQ=="
+    "IENlbGlhIHkgU2VyZ2lv"
 )
 
 if __name__ == "__main__":
