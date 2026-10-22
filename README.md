@@ -1,7 +1,7 @@
 # 💍 BODA-1 · Natalia & Guille
 
 > **Prioridad:** P0 · **Estado:** 🔴 In Progress · **Asignado a:** Natalia, Guille
-> **Reporter:** Martina, Carlos, Celia, Sergio, Ruth, Álvaro y Laura
+> **Reporter:** Martina, Carlos, Celia, Sergio
 
 ---
 
