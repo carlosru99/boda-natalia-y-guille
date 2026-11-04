@@ -27,7 +27,7 @@ NOVIO = "Guille"
 # ============================================================================
 
 
-def limpiar_invitados(invitados):
+def limpiar_invitados(invitados: list[str]) -> list[str]:
     """
     El Excel de invitados lo exportó un consultor un viernes a las 18:59.
 
@@ -35,13 +35,20 @@ def limpiar_invitados(invitados):
     en formato Título ("celia" -> "Celia") y ordenada con sorted() de toda
     la vida (sí, Carlos sale el primero, que no se le suba).
     """
-    return invitados  # TODO: lo limpiamos en la fase 2 del proyecto
+    # Strip
+    tmp = map(lambda s: s.strip(), invitados)
+
+    # Primera letra en mayúscula, el resto en minuscula
+    tmp = map(lambda s: s[0].upper() + s[1:].lower(), tmp)
+
+    # Quitar duplicados y devolver
+    return sorted(set(tmp))  # TODO: lo limpiamos en la fase 2 del proyecto
 
 
 ALIANZA = {"Iberia", "British Airways", "American Airlines", "Qatar Airways", "Finnair", "Japan Airlines"}
 
 
-def luna_de_miel(vuelos):
+def luna_de_miel(vuelos: list[dict]) -> dict:
     """
     Destino: Brasil (hay que conocer a la familia de Guille).
 
@@ -51,7 +58,11 @@ def luna_de_miel(vuelos):
       - destino en Brasil: "GRU" (São Paulo) o "GIG" (Río)
       - sin escalas (nada de escala en Daimiel)
     """
-    return vuelos[0]  # el primero que salga, que estamos a fin de mes
+    # sin escalas
+    tmp = filter(lambda d: d["escalas"] == 0, vuelos)
+    tmp = filter(lambda d: d["destino"] in ["GRU", "GIG"], tmp)
+    tmp = filter(lambda d: d["aerolinea"] in ALIANZA, tmp)
+    return min(tmp, key=lambda x:x['precio'])
 
 
 DICCIONARIO = {
@@ -63,7 +74,7 @@ DICCIONARIO = {
 }
 
 
-def traducir(frase):
+def traducir(frase: str) -> str:
     """
     La familia de Guille y la familia de Natalia van a compartir mesa.
 
@@ -71,7 +82,10 @@ def traducir(frase):
     palabra a palabra. Lo que no esté en el diccionario se queda igual,
     y la puntuación también.
     """
-    return frase  # TODO: pedir presupuesto a un traductor jurado
+    traduccion = frase
+    for k, v in DICCIONARIO.items():
+        traduccion = traduccion.replace(k, v)
+    return traduccion
 
 
 def repartir_premios(premios, gatos):
@@ -82,10 +96,10 @@ def repartir_premios(premios, gatos):
     medio premio). Devuelve una tupla (premios_por_gato, sobras).
     Las sobras son para los novios. No preguntéis.
     """
-    return premios / gatos, 0  # las sobras se las queda el catering
+    return divmod(premios, gatos)  # las sobras se las queda el catering
 
 
-def respuesta_valida(respuesta):
+def respuesta_valida(respuesta: str) -> bool:
     """
     El cura necesita validar la respuesta en el altar.
 
@@ -96,15 +110,33 @@ def respuesta_valida(respuesta):
 
     Pista: el módulo unicodedata existe.
     """
-    return respuesta == "Sí quiero"
+    EXPECTATIVA_CURA = "Sí quiero"
+
+    def normalize(s: str) -> str:
+        import re, string, unicodedata
+        deduplicate_spaces = lambda x: re.sub(' +', ' ', x)
+        remove_punctuation = lambda x: x.translate(str.maketrans('', '', string.punctuation))
+        strip_accents = lambda x: ''.join(c for c in unicodedata.normalize('NFD', x) if unicodedata.category(c) != 'Mn')
+        tmp = s.strip()
+        tmp = deduplicate_spaces(tmp)
+        tmp = remove_punctuation(tmp)
+        tmp = strip_accents(tmp)
+        return tmp.casefold()
+
+    def translate(s: str) -> str:  # NATALIAAAAAA, usa la otra funcion!!
+        DICT = {"sim": "si", "quero": "quiero"}
+        traduccion = s
+        for k, v in DICT.items():
+            traduccion = traduccion.replace(k, v)
+        return traduccion
+
+    return translate(normalize(respuesta)) == normalize(EXPECTATIVA_CURA)
 
 
 def es_compatible(persona_a, persona_b):
     # Legacy. Heredado del proveedor anterior. Nadie se atreve a tocarlo.
     # Debería devolver True solo para la pareja de novios (en cualquier orden).
-    if persona_a == persona_b:
-        return True
-    return False
+    return (persona_a, persona_b) in {(NOVIO, NOVIA), (NOVIA, NOVIO)}
 
 
 # ============================================================================
@@ -130,7 +162,7 @@ def test_luna_de_miel():
         {"aerolinea": "British Airways", "destino": "GIG", "escalas": 0, "precio": 870},
     ]
     v = luna_de_miel(vuelos)
-    assert v["aerolinea"] != "Ryanair", "¿Ryanair? ¿Después de todo lo que hemos hecho por Iberia?"
+    assert v["aerolinea"] != "Ryanair", "¿Ryanair? ¿Después de todo lo que hemos hecho por Iberia?"  # JAJAJAJAJA
     assert v["aerolinea"] != "LATAM", "LATAM se fue de oneworld en 2020. Natalia lo sabe mejor que nadie."
     assert v["aerolinea"] in ALIANZA, "Esa aerolínea no es de la alianza."
     assert v["destino"] in ("GRU", "GIG"), "Eso no es Brasil. Eso es París."
